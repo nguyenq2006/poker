@@ -1,8 +1,8 @@
 //
 //  main.c
-//  lab7
+//  Poker
 //
-//  Created by CS on 11/6/16.
+//  Created by CS on 11/7/16.
 //  Copyright © 2016 Quoc Nguyen. All rights reserved.
 //
 
@@ -15,16 +15,13 @@
 #define CARDS 52
 
 void shuffle(unsigned int wDeck[][FACES]); // shuffling modifies deck
-void deal(unsigned int wDeck[][FACES], const char *wFace[], const char *wSuit[]); //dealing doesn's modifiy the array
+void deal (unsigned int wDeck[][FACES], const char *wFace[], const char *wSuit[], int playerFaces[5], int playerSuits[5]); //dealing doesn's modifiy the array
 void checkPair(int hand[], const char *face[]); //check for pair
 void threeOfAKind(int hand[], const char *face[]);
 void fourOfAKind(int hand[], const char *face[]);
 void flush(int hand[], const char *suit[]);
 void straight(int hands[], const char *face[]);
 void BubbleSort(int a[], int array_size);
-
-int handFaces[5]; //array of faces of the hand
-int handSuit[5]; //array of suit of the hand
 
 int main(void) {
     //initalize suit array
@@ -40,13 +37,15 @@ int main(void) {
     srand(time(NULL));
     
     shuffle(deck);
-//    for(int i = 0; i < SUITS; ++i) {
-//        for (int j = 0; j < FACES; ++j) {
-//            printf("%d ", deck[i][j]);
-//        }
-//        printf("\n");
-//    }
-    deal(deck, face, suit);
+    //    for(int i = 0; i < SUITS; ++i) {
+    //        for (int j = 0; j < FACES; ++j) {
+    //            printf("%d ", deck[i][j]);
+    //        }
+    //        printf("\n");
+    //    }
+    int handFaces[5]; //array of faces of the hand
+    int handSuit[5]; //array of suit of the hand
+    deal(deck, face, suit, handFaces, handSuit);
     for(int i = 0; i < 5; ++i) {
         int f = handFaces[i];
         int s = handSuit[i];
@@ -77,7 +76,7 @@ void shuffle(unsigned int wDeck[][FACES]) {
         wDeck[row][column] = card;
     }
 }
-void deal (unsigned int wDeck[][FACES], const char *wFace[], const char *wSuit[]) {
+void deal (unsigned int wDeck[][FACES], const char *wFace[], const char *wSuit[], int playerFaces[5], int playerSuits[5]) {
     size_t row; //number of row
     size_t column; // number of column
     size_t card; // number of card
@@ -89,8 +88,8 @@ void deal (unsigned int wDeck[][FACES], const char *wFace[], const char *wSuit[]
             for (column = 0; column < FACES; ++column) {
                 //if slot contains current card, display card
                 if(wDeck[row][column] == card) {
-                    handSuit[card-1] = row;
-                    handFaces[card-1] = column;
+                    playerSuits[card-1] = row;
+                    playerFaces[card-1] = column;
                 }
             }
         }
@@ -125,7 +124,7 @@ void threeOfAKind(int hand[], const char *face[]) {
         }
         if(counter == 3){
             int n = hand[i];
-             printf("There is three of a kind of %s\n", face[n]);
+            printf("There is three of a kind of %s\n", face[n]);
         }
         counter = 1;
     }
